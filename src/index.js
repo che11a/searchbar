@@ -1,17 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import axios from 'axios';
+import InputSearch from './InputSearchBar';
+import 'semantic-ui-css/semantic.min.css'
+
+
+class App extends React.Component {
+
+  async onSearchSubmit(term) {
+    const response = await axios.get('https://api.unsplash.com/search/photos',{
+      params: {
+        query: term
+      },
+      headers: {
+        Authorization: 'Client-ID 6RcDVYpMF95zA_IUTbkLh-B_vwy4LuLbyU3-4Tw1pyE'
+      }
+
+    })
+    console.log(response.data.results);
+  }
+  render() {
+    return (
+      <div className="ui container" style={{marginTop:'10px'}}>
+        <InputSearch onSubmit={this.onSearchSubmit} />
+      </div>
+      )
+  }
+}
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <App />,
+  document.querySelector('#root')
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
